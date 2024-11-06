@@ -34,7 +34,7 @@ MongoDB installed and running locally or in the cloud
 Installation
 
 Clone the repository:
-git clone https://github.com/your-username/repository-name.git
+git clone https://github.com/AlexZ-03/user_-admin_login.git
 
 Install dependencies:
 cd repository-name
