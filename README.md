@@ -1,0 +1,1 @@
+A simple yet powerful web application for managing user accounts, built with Express.js, MongoDB, and Node.js. This project demonstrates how to create a role-based login system where admins can manage users, edit details, and delete accounts.
