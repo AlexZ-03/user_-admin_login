@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Edit User</h2>
+
+        <form action="/edit-user/<%= user._id %>" method="POST" id="editUserForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" >
+                <div class="invalid-feedback" id="usernameError">Username is required</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" >
+                <div class="invalid-feedback" id="passwordError">Password is required</div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" >
+                <div class="invalid-feedback" id="emailError">Valid email is required</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/admin-dashboard" class="btn btn-secondary ms-2">Back to Admin Dashboard</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXlFdBXlJp6j/z6aDJmnd/1T9v4y+AtV3EmxMhIDpK/tt0z1sBfLZ4Fsn8v+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhG+MyrpK+Xt2KHEL8FjqPzFHIJ5ww5JkMxJmg3iZj6fLIqDpW3r5L5I2ow" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById('editUserForm').addEventListener('submit', function(event) {
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const email = document.getElementById('email');
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            const emailError = document.getElementById('emailError');
+            let valid = true;
+    
+            username.classList.remove('is-invalid');
+            password.classList.remove('is-invalid');
+            email.classList.remove('is-invalid');
+            usernameError.textContent = '';
+            passwordError.textContent = '';
+            emailError.textContent = '';
+    
+            if (!username.value.trim()) {
+                username.classList.add('is-invalid');
+                usernameError.textContent = 'Username is required.';
+                valid = false;
+            }
+    
+            if (!password.value.trim()) {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password is required.';
+                valid = false;
+            } else if (password.value.length < 8) {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password must be at least 8 characters long.';
+                valid = false;
+            }
+
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email.value.trim()) {
+                email.classList.add('is-invalid');
+                emailError.textContent = 'Email is required.';
+                valid = false;
+            } else if (!emailPattern.test(email.value.trim())) {
+                email.classList.add('is-invalid');
+                emailError.textContent = 'Valid email is required.';
+                valid = false;
+            }
+    
+            if (!valid) {
+                event.preventDefault();
+                if (username.classList.contains('is-invalid')) {
+                    username.focus();
+                } else if (password.classList.contains('is-invalid')) {
+                    password.focus();
+                } else {
+                    email.focus();
+                }
+            }
+        });
+    </script>  
+</body>
+</html>

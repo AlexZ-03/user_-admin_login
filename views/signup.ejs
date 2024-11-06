@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div class="form-container">
+        <h2>SignUp</h2>
+        <form action="/signup" method="post" id="signupForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="username" id="name" placeholder="Enter your name"  autocomplete="off" value="<%= data.username || '' %>">
+                <div class="invalid-feedback" id="nameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password">
+                <div class="invalid-feedback" id="passwordError"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="Email"  value="<%= data.email || '' %>">
+                <div class="invalid-feedback" id="emailError"></div>
+            </div>
+            <button type="submit" class="submit-btn">SignUp</button>
+        </form>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger mt-2"><%= error %></div>
+        <% } %>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            const username = document.getElementById('name');
+            const password = document.getElementById('password');
+            const email = document.getElementById('email');
+            const nameError = document.getElementById('nameError');
+            const passwordError = document.getElementById('passwordError');
+            const emailError = document.getElementById('emailError');
+            let valid = true;
+
+            nameError.textContent = '';
+            passwordError.textContent = '';
+            emailError.textContent = '';
+
+            if (!username.value.trim()) {
+                username.classList.add('is-invalid');
+                nameError.textContent = 'Name is required.';
+                valid = false;
+            } else {
+                username.classList.remove('is-invalid');
+            }
+
+            if (!password.value.trim()) {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password is required.';
+                valid = false;
+            } else if (password.value.length < 8) {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password must be at least 8 characters long.';
+                valid = false;
+            } else {
+                password.classList.remove('is-invalid');
+            }
+
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email.value.trim()) {
+                email.classList.add('is-invalid');
+                emailError.textContent = 'Email is required.';
+                valid = false;
+            } else if (!emailPattern.test(email.value.trim())) {
+                email.classList.add('is-invalid');
+                emailError.textContent = 'Please enter a valid email address.';
+                valid = false;
+            } else {
+                email.classList.remove('is-invalid');
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                if (username.classList.contains('is-invalid')) {
+                    username.focus();
+                } else if (password.classList.contains('is-invalid')) {
+                    password.focus();
+                } else {
+                    email.focus();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
